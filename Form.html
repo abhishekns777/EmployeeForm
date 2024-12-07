@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+        body {
+            /* background-image:url('https://www.bgsit.ac.in/img1/IMG_20201109_162758.jpg'); */
+            background-image: url("Images/BGSIT.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        table {
+            width: 40%;
+            left: 30%;
+            position: absolute;
+            top: 25%;
+            background: white;
+            opacity: 0.9;
+            box-shadow: 10px 10px 5px black;
+        }
+
+        table,
+        th,
+        td {
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+        #Submitbtn {
+            width: 30%;
+            color: white;
+            background: #818181;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #Submitbtn:hover {
+            background: #535252;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <table style="border: 15px solid #dadada">
+            <tr>
+                <td>Name -</td>
+                <td>
+                    <input type="text" placeholder="Name" id="EmpName">
+                </td>
+            </tr>
+            <tr>
+                <td>Age -</td>
+                <td>
+                    <input type="text" placeholder="Age" id="EmpAge">
+                </td>
+            </tr>
+            <tr>
+                <td>Phone -</td>
+                <td>
+                    <input type="number" placeholder="Phone" min="8000000000" id="EmpPhone">
+                </td>
+            </tr>
+            <tr>
+                <td>Email -</td>
+                <td>
+                    <input type="text" placeholder="Email" id="EmpEmail">
+                </td>
+            </tr>
+            <tr>
+                <td>Address -</td>
+                <td>
+                    <input type="text" placeholder="Address" id="EmpAddress">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <!-- Method -1 : onClick of Submitbtn -->
+                    <!-- <input type="button" value="Submit" id="Submitbtn"> -->
+
+                    <!-- Method -2 : onClick of Submitbtn -->
+                    <input type="button" value="Submit" id="Submitbtn" onclick="SubmitFun()">
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+    // Method -1 : onClick of Submitbtn
+    // document.getElementById("Submitbtn").onclick=function(){
+    //     alert("Hello");
+    // }
+
+    // Method -2 : onClick of Submitbtn
+    function SubmitFun() {
+
+        var Name = document.getElementById("EmpName").value;
+        var Age = document.getElementById("EmpAge").value;
+        var Phone = document.getElementById("EmpPhone").value;
+        var Email = document.getElementById("EmpEmail").value;
+        var Address = document.getElementById("EmpAddress").value;
+
+        // Simple Form Validation
+        if(Name == ""){
+            document.getElementById("EmpName").style.border ="2px solid red";
+            alert("Please Enter Name");
+        }
+        else if(Age == ""){
+            document.getElementById("EmpAge").style.border ="2px solid red";
+            alert("Please Enter Age");
+        }
+        else if(Phone == ""){
+            document.getElementById("EmpPhone").style.border ="2px solid red";
+            alert("Please Enter Phone");
+        }
+        else if(Email == ""){
+            document.getElementById("EmpEmail").style.border ="2px solid red";
+            alert("Please Enter Email");
+        }
+        else if(Address == ""){
+            document.getElementById("EmpAddress").style.border ="2px solid red";
+            alert("Please Enter Address");
+        }
+
+        var result = {
+            Name: document.getElementById("EmpName").value,
+            Age: document.getElementById("EmpAge").value,
+            Phone: document.getElementById("EmpPhone").value,
+            Email: document.getElementById("EmpEmail").value,
+            Address: document.getElementById("EmpAddress").value,
+        }
+
+        console.log(result);
+    }
+
+</script>
