@@ -15,11 +15,11 @@
             background-attachment: fixed;
         }
 
-        table {
+        #EmployeeFormTable {
             width: 40%;
             left: 30%;
-            position: absolute;
-            top: 25%;
+            position: relative;
+            margin-top: 15%;
             background: white;
             opacity: 0.9;
             box-shadow: 10px 10px 5px black;
@@ -30,9 +30,10 @@
         td {
             border-collapse: collapse;
             padding: 5px;
+            text-align: center;
         }
 
-        #Submitbtn {
+        #SubmitBtn {
             width: 30%;
             color: white;
             background: #818181;
@@ -42,15 +43,50 @@
             cursor: pointer;
         }
 
-        #Submitbtn:hover {
+        #SubmitBtn:hover {
             background: #535252;
+        }
+
+        #EmployeeCRUDBtnTable {
+            width: 100%;
+            position: relative;
+            margin-top: 5%;
+            background: white;
+            opacity: 0.9;
+            box-shadow: 10px 10px 5px black;
+        }
+
+        #GetAllEmployeesbtn {
+            color: white;
+            background: #818181;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #DeleteEmployeesbtn {
+            color: white;
+            background: #818181;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #EmployeeGetDataTable {
+            width: 100%;
+            position: relative;
+            background: white;
+            opacity: 0.9;
+            box-shadow: 10px 10px 5px black;
         }
     </style>
 </head>
 
 <body>
     <div>
-        <table style="border: 15px solid #dadada">
+        <table style="border: 15px solid #dadada" id="EmployeeFormTable">
             <tr>
                 <td>Name -</td>
                 <td>
@@ -83,66 +119,156 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: center;">
-                    <!-- Method -1 : onClick of Submitbtn -->
-                    <!-- <input type="button" value="Submit" id="Submitbtn"> -->
+                    <!-- Method -1 : onClick of SubmitBtn -->
+                    <!-- <input type="button" value="Submit" id="SubmitBtn"> -->
 
-                    <!-- Method -2 : onClick of Submitbtn -->
-                    <input type="button" value="Submit" id="Submitbtn" onclick="SubmitFun()">
+                    <!-- Method -2 : onClick of SubmitBtn -->
+                    <input type="button" value="Submit" id="SubmitBtn" onclick="SubmitBtnFun()">
+                </td>
+            </tr>
+        </table>
+
+        <table id="EmployeeCRUDBtnTable">
+            <tr>
+                <td style="text-align: center;">
+                    <input type="button" value="GetAllEmployees" id="GetAllEmployeesbtn"
+                        onclick="GetAllEmployeesBtnFun()">
+                </td>
+                <td style="text-align: center;">
+                    <input type="button" value="DeleteEmployees" id="DeleteEmployeesbtn"
+                        onclick="DeleteEmployeesBtnFun()">
                 </td>
             </tr>
         </table>
     </div>
+
+    <div id="EmployeeGetData"></div>
+
 </body>
 
 </html>
 
 <script>
 
-    // Method -1 : onClick of Submitbtn
-    // document.getElementById("Submitbtn").onclick=function(){
+    // Method -1 : onClick of SubmitBtn
+    // document.getElementById("SubmitBtn").onclick=function(){
     //     alert("Hello");
     // }
 
-    // Method -2 : onClick of Submitbtn
-    function SubmitFun() {
+    // Method -2 : onClick of SubmitBtn
+    function SubmitBtnFun() {
 
         var Name = document.getElementById("EmpName").value;
         var Age = document.getElementById("EmpAge").value;
-        var Phone = document.getElementById("EmpPhone").value;
+        var PhoneNo = document.getElementById("EmpPhone").value;
         var Email = document.getElementById("EmpEmail").value;
         var Address = document.getElementById("EmpAddress").value;
 
         // Simple Form Validation
-        if(Name == ""){
-            document.getElementById("EmpName").style.border ="2px solid red";
+        if (Name == "") {
+            document.getElementById("EmpName").style.border = "2px solid red";
             alert("Please Enter Name");
         }
-        else if(Age == ""){
-            document.getElementById("EmpAge").style.border ="2px solid red";
+        else if (Age == "") {
+            document.getElementById("EmpAge").style.border = "2px solid red";
             alert("Please Enter Age");
         }
-        else if(Phone == ""){
-            document.getElementById("EmpPhone").style.border ="2px solid red";
-            alert("Please Enter Phone");
+        else if (PhoneNo == "") {
+            document.getElementById("EmpPhone").style.border = "2px solid red";
+            alert("Please Enter PhoneNo");
         }
-        else if(Email == ""){
-            document.getElementById("EmpEmail").style.border ="2px solid red";
+        else if (Email == "") {
+            document.getElementById("EmpEmail").style.border = "2px solid red";
             alert("Please Enter Email");
         }
-        else if(Address == ""){
-            document.getElementById("EmpAddress").style.border ="2px solid red";
+        else if (Address == "") {
+            document.getElementById("EmpAddress").style.border = "2px solid red";
             alert("Please Enter Address");
         }
+        else {
+            var result = {
+                Name: document.getElementById("EmpName").value,
+                Age: document.getElementById("EmpAge").value,
+                PhoneNo: document.getElementById("EmpPhone").value,
+                Email: document.getElementById("EmpEmail").value,
+                Address: document.getElementById("EmpAddress").value,
+            }
 
-        var result = {
-            Name: document.getElementById("EmpName").value,
-            Age: document.getElementById("EmpAge").value,
-            Phone: document.getElementById("EmpPhone").value,
-            Email: document.getElementById("EmpEmail").value,
-            Address: document.getElementById("EmpAddress").value,
+            console.log(result);
+            
+            fetch(
+                `https://localhost:44309/api/values/AddNewEmployeeDetails?Name=${Name}&Age=${Age}&PhoneNo=${PhoneNo}&Email=${Email}&Address=${Address}`,
+                {
+                    method: "POST",    // Sends data to a server to create a new resource.
+                    headers: {
+                        // "Content-Type": "application/json"
+                        "Content-Type": "application/x-www-form-urlencoded" // Because we send parameter in Form URL
+                    }
+                }
+            )
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log(data);
+                })
+                .catch(function (error) {
+                    console.log("Error : ", error);
+                })
         }
 
-        console.log(result);
+    }
+
+    function GetAllEmployeesBtnFun() {
+        fetch(
+            "https://localhost:44309/api/values/GetEmployeeDetails",    // Pass API URL
+            {
+                method: "GET",                                          // Retrieves data from a server. 
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }
+        )
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(function (data) {
+                console.log(data);
+                console.log(JSON.parse(data.Output));
+                if(data.status == 200){
+                    alert("Employee Data Inserted Sucessfully");
+                }
+
+                var result = JSON.parse(data.Output);
+                var employeeGetData = "<table id='EmployeeGetDataTable'><tr><th>ID</th><th>Name</th><th>Age</th><th>PhoneNo</th><th>Email</th><th>Address</th></tr>";
+
+                for (let i = 0; i < result.length; i++) {
+                    employeeGetData += "<tr>";
+                    employeeGetData += "<td>" + result[i].EmployeeIC + "</td>";
+                    employeeGetData += "<td>" + result[i].Name + "</td>";
+                    employeeGetData += "<td>" + result[i].Age + "</td>";
+                    employeeGetData += "<td>" + result[i].PhoneNo + "</td>";
+                    employeeGetData += "<td>" + result[i].Email + "</td>";
+                    employeeGetData += "<td>" + result[i].Address + "</td>";
+                    employeeGetData += "</tr>";
+                }
+
+                employeeGetData += "</table>";
+                document.getElementById("EmployeeGetData").innerHTML = employeeGetData;
+            })
+            .catch(function (error) {
+                console.error("Error:", error);
+            });
+    }
+
+    function DeleteEmployeesBtnFun() {
+        alert("Comming Soon");
     }
 
 </script>
