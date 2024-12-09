@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Employee Form</title>
 
     <style>
         body {
@@ -132,7 +132,7 @@
             <tr>
                 <td style="text-align: center;">
                     <input type="button" value="GetAllEmployees" id="GetAllEmployeesbtn"
-                        onclick="GetAllEmployeesBtnFun()">
+                        onclick="DisplayAllEmployeesBtnFun()">
                 </td>
                 <td style="text-align: center;">
                     <input type="button" value="DeleteEmployees" id="DeleteEmployeesbtn"
@@ -195,14 +195,14 @@
             }
 
             console.log(result);
-            
+
             fetch(
                 `https://localhost:44309/api/values/AddNewEmployeeDetails?Name=${Name}&Age=${Age}&PhoneNo=${PhoneNo}&Email=${Email}&Address=${Address}`,
                 {
                     method: "POST",    // Sends data to a server to create a new resource.
                     headers: {
-                        // "Content-Type": "application/json"
-                        "Content-Type": "application/x-www-form-urlencoded" // Because we send parameter in Form URL
+                        "Content-Type": "application/json"
+                        // "Content-Type": "application/x-www-form-urlencoded" // Because we send parameter in Form URL
                     }
                 }
             )
@@ -214,6 +214,14 @@
                 })
                 .then(function (data) {
                     console.log(data);
+                    alert("Data Added Sucessfully");
+
+                    // Clear Input Value to Null
+                    document.getElementById("EmpName").value = "";
+                    document.getElementById("EmpAge").value = "";
+                    document.getElementById("EmpPhone").value = "";
+                    document.getElementById("EmpEmail").value = "";
+                    document.getElementById("EmpAddress").value = "";
                 })
                 .catch(function (error) {
                     console.log("Error : ", error);
@@ -222,7 +230,7 @@
 
     }
 
-    function GetAllEmployeesBtnFun() {
+    function DisplayAllEmployeesBtnFun() {
         fetch(
             "https://localhost:44309/api/values/GetEmployeeDetails",    // Pass API URL
             {
@@ -241,9 +249,6 @@
             .then(function (data) {
                 console.log(data);
                 console.log(JSON.parse(data.Output));
-                if(data.status == 200){
-                    alert("Employee Data Inserted Sucessfully");
-                }
 
                 var result = JSON.parse(data.Output);
                 var employeeGetData = "<table id='EmployeeGetDataTable'><tr><th>ID</th><th>Name</th><th>Age</th><th>PhoneNo</th><th>Email</th><th>Address</th></tr>";
@@ -268,7 +273,33 @@
     }
 
     function DeleteEmployeesBtnFun() {
-        alert("Comming Soon");
+        var EmployeeID = prompt();
+        console.log(EmployeeID);
+        if (EmployeeID != "" || EmployeeID != null) {
+
+            fetch(
+                "https://localhost:44309/api/values/DeleteEmployeeDetails?EmployeeID=" + EmployeeID,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }
+            )
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                        return response.json();
+                    }
+                })
+                .then(function (data) {
+                    console.log(data);
+                    alert("Employee Data Deleted Sucessfully");
+                })
+                .catch(function (error) {
+                    console.log("Error : ", error);
+                })
+        }
     }
 
 </script>
